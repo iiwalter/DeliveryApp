@@ -1,25 +1,19 @@
 import { getGeolocation } from "../services/api";
 import { Address } from "../types/address";
-import { useApi } from "./useApi";
 
-export const useGeolocation = () => {
-  const {
-    data: address,
-    loading,
-    error,
-    fetchData,
-  } = useApi<Address | null>(getGeolocation, null, false);
+interface UseGeolocation {
+  handleSearchAddress: (inlineAddress: string) => Promise<Address>;
+}
 
-  const searchAddress = async (
-    inlineAddress: string
-  ): Promise<Address | null> => {
+export const useGeolocation = (): UseGeolocation => {
+  const handleSearchAddress = async (inlineAddress: string) => {
     try {
-      await fetchData(inlineAddress);
-      return address;
+      const addressData = await getGeolocation(inlineAddress);
+      return addressData;
     } catch (err: any) {
-      return null;
+      alert(`Erro ao buscar endereço: ${err.message ?? "tente novamente"}`);
     }
+    return null;
   };
-
-  return { address, loading, error, searchAddress };
+  return { handleSearchAddress };
 };
