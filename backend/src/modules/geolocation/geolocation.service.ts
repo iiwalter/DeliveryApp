@@ -18,7 +18,6 @@ export class GeolocationService {
       const response = await this.fetchGeolocation(inlineAddress);
 
       if (!response.ok) {
-        console.log('response.ok');
         throw new Error(`${Errors.INVALID_ADDRESS}: ${response.statusText}`);
       }
 
